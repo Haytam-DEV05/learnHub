@@ -243,37 +243,45 @@ export default function Courses() {
     "Marketing",
   ];
   return (
-    <div className="min-h-screen max-w-275 mx-auto">
-      <h2 className="text-[40px] font-bold max-w-fit mx-auto">
-        Explore Our Top Courses
-      </h2>
-      <p className="border border-black rounded-[30px] px-8 max-w-fit mx-auto">
-        Popular Courses
-      </p>
-      <p className="max-w-[70%] mx-auto text-center">
-        Choose from hundreds of courses taught by industry experts. Learn at
-        your own pace and transform your career.
-      </p>
+    <div className="bg-(--background) py-20">
+      <div className="min-h-screen max-w-275 mx-auto ">
+        <h2 className="text-[40px] font-bold max-w-fit mx-auto">
+          Explore Our Top Courses
+        </h2>
+        <p className="border border-black rounded-[30px] px-8 max-w-fit mx-auto">
+          Popular Courses
+        </p>
+        <p className="max-w-[70%] mx-auto text-center">
+          Choose from hundreds of courses taught by industry experts. Learn at
+          your own pace and transform your career.
+        </p>
 
-      {/* Categories */}
-      <div className="categories my-8 max-w-fit mx-auto">
-        {categories.map((categorie) => {
-          return (
-            <button
-              onClick={() => setActiveCategories(categorie)}
-              className={`rounded-lg py-1 px-4 text-(--text) border border-black mx-1 cursor-pointer ${activeCategories === categorie && "border-0 bg-(--accent) text-white"}`}
-            >
-              {categorie}
-            </button>
-          );
-        })}
-      </div>
+        {/* Categories */}
+        <div className="categories my-8 max-w-fit mx-auto">
+          {categories.map((categorie) => {
+            return (
+              <button
+                onClick={() => setActiveCategories(categorie)}
+                className={`rounded-lg py-1 px-4 text-(--text) border border-black mx-1 cursor-pointer ${activeCategories === categorie && "border-0 bg-(--accent) text-white"}`}
+              >
+                {categorie}
+              </button>
+            );
+          })}
+        </div>
 
-      {/* Courses */}
-      <div className="courses grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-5">
-        {courses.map((course) => {
-          return <CoursesCard course={course} key={course.id} />;
-        })}
+        {/* Courses */}
+        <div className="courses grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-5">
+          {courses
+            .filter((course) =>
+              activeCategories === "All"
+                ? courses
+                : course.category === activeCategories,
+            )
+            .map((course) => {
+              return <CoursesCard course={course} key={course.id} />;
+            })}
+        </div>
       </div>
     </div>
   );
