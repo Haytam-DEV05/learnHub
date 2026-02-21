@@ -15,7 +15,7 @@ export default function Header() {
         <>
           <Navbar />
         </>
-        <main>
+        <main className="pt-20">
           <Outlet />
         </main>
       </>
