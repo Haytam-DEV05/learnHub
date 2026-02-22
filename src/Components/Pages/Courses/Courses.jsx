@@ -248,7 +248,7 @@ export default function Courses() {
         <h2 className="text-[40px] font-bold max-w-fit mx-auto">
           Explore Our Top Courses
         </h2>
-        <p className="border border-black rounded-[30px] px-8 max-w-fit mx-auto">
+        <p className="border border-black rounded-[30px] px-8 max-w-fit mx-auto my-4">
           Popular Courses
         </p>
         <p className="max-w-[70%] mx-auto text-center">
