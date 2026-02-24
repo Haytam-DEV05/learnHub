@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 
-:root {
+/* :root {
     --primary: #7C3AED;
     --primary-dark: #5B21B6;
     --accent: #22D3EE;
@@ -10,6 +10,28 @@
     --card-bg: #FFFFFF;
     --text: #1F2937;
     --text-light: #6B7280;
+} */
+
+body[theme="light"] {
+    --primary: #7C3AED;
+    --primary-dark: #5B21B6;
+    --accent: #22D3EE;
+
+    --background: #F9FAFB;
+    --card-bg: #FFFFFF;
+    --text: #1F2937;
+    --text-light: #6B7280;
+}
+
+body[theme="dark"] {
+    --primary: #A78BFA;
+    --primary-dark: #7C3AED;
+    --accent: #22D3EE;
+
+    --background: #0F172A;
+    --card-bg: #1E293B;
+    --text: #F1F5F9;
+    --text-light: #94A3B8;
 }
 
 h1,

@@ -22,7 +22,7 @@ export default function Header() {
         <>
           <Navbar />
         </>
-        <main className="pt-20">
+        <main className="pt-20 transition-colors duration-300">
           <Outlet />
         </main>
       </>

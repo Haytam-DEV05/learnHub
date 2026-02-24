@@ -45,17 +45,7 @@ export default function Footer() {
             </div>
 
             {/* Button */}
-            <button
-              className="px-6 py-3 rounded-xl font-medium transition"
-              style={{
-                background: "var(--primary)",
-                color: "#fff",
-              }}
-              onMouseOver={(e) =>
-                (e.target.style.background = "var(--primary-dark)")
-              }
-              onMouseOut={(e) => (e.target.style.background = "var(--primary)")}
-            >
+            <button className="px-6 py-3 rounded-xl font-medium text-white bg-(--primary) hover:bg-(--primary-dark) duration-200 transition-colors cursor-pointer">
               Subscribe
             </button>
           </form>

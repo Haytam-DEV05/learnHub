@@ -1,6 +1,8 @@
 import { FaBookOpen } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router";
-
+// ==============================
+import Theme from "./Theme";
+// ==============================
 export default function Navbar() {
   const navigate = useNavigate();
   const handleBtnNavigate = (e) => {
@@ -8,7 +10,7 @@ export default function Navbar() {
     navigate("/SignIn");
   };
   return (
-    <nav className="flex justify-around items-center min-h-20 bg-(--background) z-99 shadow-md fixed top-0 left-0 right-0 backdrop-blur-lg w-full">
+    <nav className="flex justify-around items-center min-h-20 bg-(--background) z-99 shadow-md fixed top-0 left-0 right-0 backdrop-blur-lg w-full transition-colors duration-300">
       <div className="logo flex items-center cursor-pointer">
         <span className="text-(--primary)">
           <FaBookOpen size={25} className="mr-2" />
@@ -27,7 +29,9 @@ export default function Navbar() {
         </li>
       </ul>
       <div className="flex space-x-4.5">
-        <div className="">Dark / light mode</div>
+        <div className="">
+          <Theme />
+        </div>
         <NavLink
           onClick={handleBtnNavigate}
           className="bg-(--accent) py-1 px-5 cursor-pointer rounded-[20px] text-white hover:-translate-y-1.5 duration-200 transition-all"
