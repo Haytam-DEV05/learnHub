@@ -23,7 +23,7 @@ export default function CoursesCard({ course }) {
           <span className="flex items-center space-x-1">
             {course.rating}
             <b>
-              <FaStar size={18} className="ms-1" />
+              <FaStar size={18} className="ms-1 text-yellow-400" />
             </b>
           </span>
         </div>
@@ -31,7 +31,7 @@ export default function CoursesCard({ course }) {
           {course.title}
         </h2>
         <h3 className="font-medium text-[16px]">By {course.instructor}</h3>
-        <div className="flex justify-between mt-3">
+        <div className="flex justify-between mt-3 text-(--text)">
           <span className="flex items-center">
             <FaClock className="mx-1" />
             {course.duration}
