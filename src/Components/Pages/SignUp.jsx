@@ -1,25 +1,106 @@
-import { useState } from "react";
-import { FaUser } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
+import supabase from "../../util/supabase";
+import { useNavigate } from "react-router";
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [role, setRole] = useState("student");
+  const [showPassword, setShowPassword] = useState(false);
+
   const [formInputs, setFormInputs] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
+    confirmPassword: "",
+    speciality: "",
+    agree: false,
   });
-  const handleBtnSubmit = (e) => {
+
+  // Auto clear error
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(""), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  const handleBtnSubmit = async (e) => {
     e.preventDefault();
-    const form = { id: Date.now(), ...formInputs, role: role };
-    console.log(form);
+
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      speciality,
+      agree,
+    } = formInputs;
+
+    if (
+      !firstName.trim() ||
+      !lastName.trim() ||
+      !email.trim() ||
+      !password.trim()
+    ) {
+      return setError("Please fill all required fields.");
+    }
+
+    if (password.length < 8) {
+      return setError("Password must be at least 8 characters.");
+    }
+
+    if (password !== confirmPassword) {
+      return setError("Passwords do not match.");
+    }
+
+    if (!agree) {
+      return setError("You must accept the terms.");
+    }
+
+    try {
+      setLoading(true);
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            firstName,
+            lastName,
+            role,
+            speciality: role === "teacher" ? speciality : null,
+          },
+        },
+      });
+
+      if (error) {
+        setError(error.message);
+        return;
+      }
+
+      if (data?.user) {
+        alert("Check your email to verify your account.");
+        navigate("/SignIn");
+      }
+    } catch (err) {
+      console.log(err);
+      setError("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div
-      className="min-h-screen flex justify-center items-center px-4"
+      className="min-h-screen flex justify-center items-center px-4 py-20"
       style={{ background: "var(--background)" }}
     >
       <div
@@ -27,131 +108,155 @@ export default function SignUp() {
         style={{ background: "var(--card-bg)", color: "var(--text)" }}
       >
         <h1 className="text-3xl font-bold text-center mb-2">Join LearnHub</h1>
-
-        <p className="text-center mb-6" style={{ color: "var(--text-light)" }}>
+        <p className="text-center mb-6 text-sm opacity-70">
           Start your learning journey today
         </p>
 
         <form className="space-y-5" onSubmit={handleBtnSubmit}>
-          {/* Full Name */}
-          <div className="role bg-blue-100 py-2 px-1 rounded-lg grid grid-cols-2 gap-2">
-            <span
+          {/* ROLE */}
+          <div className="bg-blue-100 py-2 px-1 rounded-lg grid grid-cols-2 gap-2">
+            <button
+              type="button"
               onClick={() => setRole("student")}
-              className={`p-3 rounded-2xl cursor-pointer text-center font-semibold text-black ${role === "student" && "bg-white text-blue-600"}`}
+              className={`p-3 rounded-2xl font-semibold ${
+                role === "student" ? "bg-white text-blue-600" : "text-black"
+              }`}
             >
               Student
-            </span>
-            <span
+            </button>
+            <button
+              type="button"
               onClick={() => setRole("teacher")}
-              className={`p-3 rounded-2xl cursor-pointer text-center font-semibold text-black ${role === "teacher" && "bg-white text-blue-600"}`}
+              className={`p-3 rounded-2xl font-semibold ${
+                role === "teacher" ? "bg-white text-blue-600" : "text-black"
+              }`}
             >
               Teacher
+            </button>
+          </div>
+
+          {/* FULL NAME */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="relative">
+              <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
+              <input
+                type="text"
+                placeholder="First Name"
+                className="w-full pl-10 py-3 rounded-lg border outline-none"
+                value={formInputs.firstName}
+                onChange={(e) =>
+                  setFormInputs({ ...formInputs, firstName: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="relative">
+              <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
+              <input
+                type="text"
+                placeholder="Last Name"
+                className="w-full pl-10 py-3 rounded-lg border outline-none"
+                value={formInputs.lastName}
+                onChange={(e) =>
+                  setFormInputs({ ...formInputs, lastName: e.target.value })
+                }
+              />
+            </div>
+          </div>
+
+          {/* EMAIL */}
+          <div className="relative">
+            <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
+            <input
+              type="email"
+              placeholder="you@example.com"
+              className="w-full pl-10 py-3 rounded-lg border outline-none"
+              value={formInputs.email}
+              onChange={(e) =>
+                setFormInputs({ ...formInputs, email: e.target.value })
+              }
+            />
+          </div>
+
+          {/* PASSWORD */}
+          <div className="relative">
+            <RiLockPasswordFill className="absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="w-full pl-10 pr-10 py-3 rounded-lg border outline-none"
+              value={formInputs.password}
+              onChange={(e) =>
+                setFormInputs({ ...formInputs, password: e.target.value })
+              }
+            />
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
-          <div>
-            <label className="block mb-2 text-sm">Full Name</label>
 
-            <div className="grid grid-cols-2 gap-4">
-              {/* First Name */}
-              <div className="relative">
-                <span
-                  className="absolute left-3 top-1/2 -translate-y-1/2"
-                  style={{ color: "var(--text-light)" }}
-                >
-                  <FaUser />
-                </span>
-                <input
-                  type="text"
-                  placeholder="First Name"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg border outline-none transition border-(--text-light)"
-                  onChange={(e) =>
-                    setFormInputs({ ...formInputs, firstName: e.target.value })
-                  }
-                  value={formInputs.firstName}
-                />
-              </div>
+          {/* CONFIRM PASSWORD */}
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            className="w-full py-3 px-4 rounded-lg border outline-none"
+            value={formInputs.confirmPassword}
+            onChange={(e) =>
+              setFormInputs({
+                ...formInputs,
+                confirmPassword: e.target.value,
+              })
+            }
+          />
 
-              {/* Last Name */}
-              <div className="relative">
-                <span
-                  className="absolute left-3 top-1/2 -translate-y-1/2"
-                  style={{ color: "var(--text-light)" }}
-                >
-                  <FaUser />
-                </span>
-                <input
-                  type="text"
-                  placeholder="Last Name"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg border outline-none border-(--text-light) transition"
-                  onChange={(e) =>
-                    setFormInputs({ ...formInputs, lastName: e.target.value })
-                  }
-                  value={formInputs.lastName}
-                />
-              </div>
-            </div>
+          {/* TEACHER FIELD */}
+          {role === "teacher" && (
+            <input
+              type="text"
+              placeholder="Your Speciality"
+              className="w-full py-3 px-4 rounded-lg border outline-none"
+              value={formInputs.speciality}
+              onChange={(e) =>
+                setFormInputs({
+                  ...formInputs,
+                  speciality: e.target.value,
+                })
+              }
+            />
+          )}
+
+          {/* TERMS */}
+          <div className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={formInputs.agree}
+              onChange={(e) =>
+                setFormInputs({
+                  ...formInputs,
+                  agree: e.target.checked,
+                })
+              }
+            />
+            <span>I agree to the Terms & Conditions</span>
           </div>
 
-          {/* Email */}
-          <div>
-            <label className="block mb-2 text-sm">Email Address</label>
-
-            <div className="relative">
-              <span
-                className="absolute left-3 top-1/2 -translate-y-1/2"
-                style={{ color: "var(--text-light)" }}
-              >
-                <MdEmail />
-              </span>
-              <input
-                type="email"
-                placeholder="you@example.com"
-                className="w-full pl-10 pr-4 py-3 rounded-lg border outline-none transition bg-transparent border-(text-light)"
-                onChange={(e) =>
-                  setFormInputs({ ...formInputs, email: e.target.value })
-                }
-                value={formInputs.email}
-              />
+          {/* ERROR */}
+          {error && (
+            <div className="bg-red-200 border border-red-500 rounded py-1 px-5">
+              <span className="text-red-600 text-sm">{error}</span>
             </div>
-          </div>
+          )}
 
-          {/* Password */}
-          <div>
-            <label className="block mb-2 text-sm">Password</label>
-
-            <div className="relative">
-              <span
-                className="absolute left-3 top-1/2 -translate-y-1/2"
-                style={{ color: "var(--text-light)" }}
-              >
-                <RiLockPasswordFill />
-              </span>
-              <input
-                type="password"
-                placeholder="•••••••"
-                className="w-full pl-10 pr-4 py-3 rounded-lg border outline-none transition bg-transparent border-(--text-light)"
-                onChange={(e) =>
-                  setFormInputs({ ...formInputs, password: e.target.value })
-                }
-                value={formInputs.value}
-              />
-            </div>
-          </div>
-
-          {/* Button */}
+          {/* BUTTON */}
           <button
             type="submit"
-            className="w-full py-3 rounded-lg font-semibold transition"
-            style={{
-              background: "var(--primary)",
-              color: "#fff",
-            }}
-            onMouseOver={(e) =>
-              (e.target.style.background = "var(--primary-dark)")
-            }
-            onMouseOut={(e) => (e.target.style.background = "var(--primary)")}
+            disabled={loading}
+            className="w-full py-3 rounded-lg font-semibold bg-blue-600 text-white hover:bg-blue-700 transition"
           >
-            Create Account
+            {loading ? "Creating Account..." : "Create Account"}
           </button>
         </form>
       </div>

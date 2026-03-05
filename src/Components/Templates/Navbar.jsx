@@ -22,10 +22,10 @@ export default function Navbar() {
           <a href="">Home</a>
         </li>
         <li>
-          <a href="">Home</a>
+          <a href="">Courses</a>
         </li>
         <li>
-          <a href="">Home</a>
+          <a href="">About</a>
         </li>
       </ul>
       <div className="flex space-x-4.5">
