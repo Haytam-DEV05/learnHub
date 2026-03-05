@@ -27,8 +27,9 @@ export default function Home() {
   ];
   return (
     <>
-      <div className="min-h-screen flex justify-center items-center bg-(--background)">
-        <div className="container text-center mx-1">
+      <section id="home" className="min-h-screen flex justify-center items-center bg-(--background)">
+        <div className="container text-center mx-1 relative">
+          <div className="bg-(--primary) w-120 h-120 absolute blur-[120px] opacity-30 rounded-full left-90 -top-40 "></div>
           <p className="py-1 px-8 bg-(--card-bg) shadow-md rounded-[50px] max-w-fit mx-auto">
             New courses added weekly
           </p>
@@ -54,9 +55,9 @@ export default function Home() {
             </a>
           </div>
         </div>
-      </div>
+      </section>
       <Courses />
-      <div className="bg-(--background)">
+      <section id="about" className="bg-(--background)">
         <div className="bottom-home max-w-275 mx-auto py-10">
           <div className="info">
             <div className="content text-center">
@@ -95,7 +96,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }

@@ -243,7 +243,7 @@ export default function Courses() {
     "Marketing",
   ];
   return (
-    <div className="bg-(--background) py-20">
+    <section id="courses" className="bg-(--background) py-20">
       <div className="min-h-screen max-w-275 mx-auto ">
         <h2 className="text-[40px] font-bold max-w-fit mx-auto">
           Explore Our Top Courses
@@ -283,6 +283,6 @@ export default function Courses() {
             })}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

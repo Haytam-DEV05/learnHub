@@ -1,43 +1,61 @@
 import { FaBookOpen } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router";
-// ==============================
 import Theme from "./Theme";
-// ==============================
+
 export default function Navbar() {
   const navigate = useNavigate();
-  const handleBtnNavigate = (e) => {
-    e.preventDefault();
-    navigate("/SignIn");
-  };
+
   return (
-    <nav className="flex justify-around items-center min-h-20 bg-(--background) z-99 shadow-md fixed top-0 left-0 right-0 backdrop-blur-lg w-full transition-colors duration-300">
-      <div className="logo flex items-center cursor-pointer">
-        <span className="text-(--primary)">
-          <FaBookOpen size={25} className="mr-2" />
-        </span>
-        <h3 className="text-[20px] font-semibold">LearnHub</h3>
-      </div>
-      <ul className="flex space-x-3.5">
-        <li>
-          <a href="">Home</a>
-        </li>
-        <li>
-          <a href="">Courses</a>
-        </li>
-        <li>
-          <a href="">About</a>
-        </li>
-      </ul>
-      <div className="flex space-x-4.5">
-        <div className="">
-          <Theme />
-        </div>
-        <NavLink
-          onClick={handleBtnNavigate}
-          className="bg-(--accent) py-1 px-5 cursor-pointer rounded-[20px] text-white hover:-translate-y-1.5 duration-200 transition-all"
+    <nav className="bg-(--background)/80 backdrop-blur-xl fixed top-0 left-0 right-0 z-50 border-b border-black/10 dark:border-white/10">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 h-20">
+        {/* LOGO */}
+
+        <div
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 cursor-pointer group"
         >
-          Sign In
-        </NavLink>
+          <FaBookOpen
+            className="text-(--primary) group-hover:rotate-12 transition"
+            size={26}
+          />
+
+          <h1 className="text-xl font-bold text-(--text)">LearnHub</h1>
+        </div>
+
+        {/* LINKS */}
+
+        <ul className="hidden md:flex items-center gap-8 text-(--text-light) font-medium">
+          <li>
+            <NavLink to="/" className="hover:text-(--primary) transition">
+              Home
+            </NavLink>
+          </li>
+
+          <li>
+            <a className="hover:text-(--primary) transition" href="#courses">
+              Courses
+            </a>
+          </li>
+
+          <li>
+            <a className="hover:text-(--primary) transition" href="#about">
+              About
+            </a>
+          </li>
+        </ul>
+
+        {/* RIGHT SIDE */}
+
+        <div className="flex items-center gap-4">
+          <Theme />
+
+          <NavLink
+            to="/SignIn"
+            className="px-5 py-2 rounded-full text-white font-medium bg-(--primary) hover:bg-(--primary-dark) hover:scale-105 transition shadow-md"
+          >
+            Sign In
+          </NavLink>
+        </div>
       </div>
     </nav>
   );
