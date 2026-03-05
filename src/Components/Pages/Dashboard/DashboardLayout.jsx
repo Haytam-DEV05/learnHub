@@ -21,6 +21,7 @@ export default function DashboardLayout() {
     };
 
     getUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLogout = async () => {

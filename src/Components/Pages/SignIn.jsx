@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router";
-import supabase from "../../util/supabase";
+import { useUser } from "../../Context/UserAuthetication";
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const { signIn } = useUser();
 
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const [formInputs, setFormInputs] = useState({
     email: "",
     password: "",
   });
 
-  // Auto clear error
+  // remove error automatically
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => setError(""), 3000);
@@ -21,25 +22,12 @@ export default function SignIn() {
     }
   }, [error]);
 
-  // // Check if user already logged in
-  // useEffect(() => {
-  //   const checkUser = async () => {
-  //     const { data } = await supabase.auth.getSession();
-  //     if (data?.session) {
-  //       redirectByRole(data.session.user);
-  //     }
-  //   };
-  //   checkUser();
-  // }, []);
-
   const redirectByRole = (user) => {
     const role = user?.user_metadata?.role;
 
-    if (role === "teacher") {
-      navigate("/teacher/dashboard");
-    } else {
-      navigate("/student/dashboard");
-    }
+    navigate(
+      `${role === "teacher" ? "/teacher/dashboard" : "/student/dashboard"}`,
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -47,17 +35,14 @@ export default function SignIn() {
 
     const { email, password } = formInputs;
 
-    if (!email.trim() || !password.trim()) {
-      return setError("Please enter all fields.");
+    if (!email || !password) {
+      return setError("Please fill all fields.");
     }
 
     try {
       setLoading(true);
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { data, error } = await signIn(email, password);
 
       if (error) {
         return setError(error.message);
@@ -71,26 +56,6 @@ export default function SignIn() {
       setError("Something went wrong.");
     } finally {
       setLoading(false);
-    }
-  };
-
-  // Forgot password
-  const handleResetPassword = async () => {
-    if (!formInputs.email) {
-      return setError("Enter your email first.");
-    }
-
-    const { error } = await supabase.auth.resetPasswordForEmail(
-      formInputs.email,
-      {
-        redirectTo: "http://localhost:5173/update-password",
-      },
-    );
-
-    if (error) {
-      setError(error.message);
-    } else {
-      alert("Password reset email sent.");
     }
   };
 
@@ -111,7 +76,7 @@ export default function SignIn() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
-            <div className="bg-red-200 py-2 px-4 rounded border border-red-500">
+            <div className="bg-red-200 border border-red-500 rounded py-2 px-4">
               <span className="text-red-600 text-sm">{error}</span>
             </div>
           )}
@@ -119,6 +84,7 @@ export default function SignIn() {
           {/* EMAIL */}
           <div>
             <label className="block mb-2 text-sm">Email Address</label>
+
             <input
               type="email"
               placeholder="you@example.com"
@@ -134,13 +100,13 @@ export default function SignIn() {
           </div>
 
           {/* PASSWORD */}
-          <div className="relative">
+          <div>
             <label className="block mb-2 text-sm">Password</label>
 
             <input
               type="password"
-              placeholder="•••••••"
-              className="w-full px-4 py-3 pr-10 rounded-lg border outline-none"
+              placeholder="••••••••"
+              className="w-full px-4 py-3 rounded-lg border outline-none"
               value={formInputs.password}
               onChange={(e) =>
                 setFormInputs({
@@ -149,18 +115,6 @@ export default function SignIn() {
                 })
               }
             />
-          </div>
-
-          {/* FORGOT PASSWORD */}
-          <div className="flex justify-end">
-            <button
-              type="button"
-              onClick={handleResetPassword}
-              className="text-sm hover:underline"
-              style={{ color: "var(--accent)" }}
-            >
-              Forgot Password?
-            </button>
           </div>
 
           {/* BUTTON */}
@@ -176,7 +130,7 @@ export default function SignIn() {
             Don't have an account?{" "}
             <NavLink
               to="/SignUp"
-              className="font-medium hover:underline text-blue-600"
+              className="text-blue-600 font-medium hover:underline"
             >
               Sign Up
             </NavLink>

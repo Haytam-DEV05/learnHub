@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
-import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
-import supabase from "../../util/supabase";
 import { useNavigate } from "react-router";
+import { useUser } from "../../Context/UserAuthetication";
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const { signUp } = useUser();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [role, setRole] = useState("student");
-  const [showPassword, setShowPassword] = useState(false);
 
   const [formInputs, setFormInputs] = useState({
     firstName: "",
@@ -23,7 +23,7 @@ export default function SignUp() {
     agree: false,
   });
 
-  // Auto clear error
+  // clear error automatically
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => setError(""), 3000);
@@ -44,12 +44,7 @@ export default function SignUp() {
       agree,
     } = formInputs;
 
-    if (
-      !firstName.trim() ||
-      !lastName.trim() ||
-      !email.trim() ||
-      !password.trim()
-    ) {
+    if (!firstName || !lastName || !email || !password) {
       return setError("Please fill all required fields.");
     }
 
@@ -68,17 +63,11 @@ export default function SignUp() {
     try {
       setLoading(true);
 
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            firstName,
-            lastName,
-            role,
-            speciality: role === "teacher" ? speciality : null,
-          },
-        },
+      const { data, error } = await signUp(email, password, {
+        firstName,
+        lastName,
+        role,
+        speciality: role === "teacher" ? speciality : null,
       });
 
       if (error) {
@@ -124,6 +113,7 @@ export default function SignUp() {
             >
               Student
             </button>
+
             <button
               type="button"
               onClick={() => setRole("teacher")}
@@ -135,7 +125,7 @@ export default function SignUp() {
             </button>
           </div>
 
-          {/* FULL NAME */}
+          {/* NAME */}
           <div className="grid grid-cols-2 gap-4">
             <div className="relative">
               <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
@@ -145,7 +135,10 @@ export default function SignUp() {
                 className="w-full pl-10 py-3 rounded-lg border outline-none"
                 value={formInputs.firstName}
                 onChange={(e) =>
-                  setFormInputs({ ...formInputs, firstName: e.target.value })
+                  setFormInputs({
+                    ...formInputs,
+                    firstName: e.target.value,
+                  })
                 }
               />
             </div>
@@ -158,7 +151,10 @@ export default function SignUp() {
                 className="w-full pl-10 py-3 rounded-lg border outline-none"
                 value={formInputs.lastName}
                 onChange={(e) =>
-                  setFormInputs({ ...formInputs, lastName: e.target.value })
+                  setFormInputs({
+                    ...formInputs,
+                    lastName: e.target.value,
+                  })
                 }
               />
             </div>
@@ -173,7 +169,10 @@ export default function SignUp() {
               className="w-full pl-10 py-3 rounded-lg border outline-none"
               value={formInputs.email}
               onChange={(e) =>
-                setFormInputs({ ...formInputs, email: e.target.value })
+                setFormInputs({
+                  ...formInputs,
+                  email: e.target.value,
+                })
               }
             />
           </div>
@@ -182,20 +181,17 @@ export default function SignUp() {
           <div className="relative">
             <RiLockPasswordFill className="absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
             <input
-              type={showPassword ? "text" : "password"}
+              type="password"
               placeholder="Password"
               className="w-full pl-10 pr-10 py-3 rounded-lg border outline-none"
               value={formInputs.password}
               onChange={(e) =>
-                setFormInputs({ ...formInputs, password: e.target.value })
+                setFormInputs({
+                  ...formInputs,
+                  password: e.target.value,
+                })
               }
             />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
           </div>
 
           {/* CONFIRM PASSWORD */}
@@ -245,7 +241,7 @@ export default function SignUp() {
 
           {/* ERROR */}
           {error && (
-            <div className="bg-red-200 border border-red-500 rounded py-1 px-5">
+            <div className="bg-red-200 border border-red-500 rounded py-2 px-4">
               <span className="text-red-600 text-sm">{error}</span>
             </div>
           )}
