@@ -49,6 +49,7 @@ export default function SignIn() {
       }
 
       if (data?.user) {
+        document.body.setAttribute("theme", "light");
         redirectByRole(data.user);
       }
     } catch (err) {

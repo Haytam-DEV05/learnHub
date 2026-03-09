@@ -80,8 +80,7 @@ export default function SignUp() {
         navigate("/SignIn");
       }
     } catch (err) {
-      console.log(err);
-      setError("Something went wrong.");
+      setError("Something went wrong.", err);
     } finally {
       setLoading(false);
     }

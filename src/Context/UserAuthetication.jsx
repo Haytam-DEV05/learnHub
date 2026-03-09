@@ -21,12 +21,13 @@ export const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     getUser();
     // HADXI MAZAL MAFHAMTOUCH MAZYANNE =>
     const { data: listener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setUser(session?.user || null);
-      }
+      },
     );
 
     return () => {
@@ -40,7 +41,6 @@ export const UserProvider = ({ children }) => {
       email,
       password,
     });
-
     return { data, error };
   };
 
@@ -53,6 +53,17 @@ export const UserProvider = ({ children }) => {
         data: metadata,
       },
     });
+
+    if (error) return { data, error };
+
+    if (data?.user) {
+      await supabase.from("profiles").insert({
+        id: data.user.id,
+        name: metadata.firstName + " " + metadata.lastName,
+        role: metadata.role,
+        speciality: metadata.speciality || null,
+      });
+    }
 
     return { data, error };
   };

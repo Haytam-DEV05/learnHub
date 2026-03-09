@@ -1,44 +1,30 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaBookOpen, FaChartLine, FaAward } from "react-icons/fa";
-import supabase from "../../../../util/supabase";
+import { useUser } from "../../../../Context/UserAuthetication";
 
 export default function StudentDashboard() {
-  const [user, setUser] = useState(null);
-  const [courses, setCourses] = useState([]);
+  const { user } = useUser();
 
-  useEffect(() => {
-    const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data?.user);
-    };
-
-    // Dummy courses (t9dar tbdelhom b real DB)
-    const loadCourses = () => {
-      setCourses([
-        {
-          id: 1,
-          title: "React for Beginners",
-          progress: 70,
-          teacher: "John Doe",
-        },
-        {
-          id: 2,
-          title: "Advanced JavaScript",
-          progress: 45,
-          teacher: "Jane Smith",
-        },
-        {
-          id: 3,
-          title: "UI/UX Design Basics",
-          progress: 90,
-          teacher: "Mark Lee",
-        },
-      ]);
-    };
-
-    getUser();
-    loadCourses();
-  }, []);
+  const [courses, setCourses] = useState([
+    {
+      id: 1,
+      title: "React for Beginners",
+      progress: 100,
+      teacher: "John Doe",
+    },
+    {
+      id: 2,
+      title: "Advanced JavaScript",
+      progress: 45,
+      teacher: "Jane Smith",
+    },
+    {
+      id: 3,
+      title: "UI/UX Design Basics",
+      progress: 90,
+      teacher: "Mark Lee",
+    },
+  ]);
 
   const totalCourses = courses.length;
   const completedCourses = courses.filter((c) => c.progress === 100).length;
@@ -89,7 +75,7 @@ export default function StudentDashboard() {
       <div>
         <h3 className="text-2xl font-bold mb-6">My Courses</h3>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {courses.map((course) => (
             <div
               key={course.id}

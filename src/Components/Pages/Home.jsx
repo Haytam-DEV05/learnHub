@@ -27,7 +27,10 @@ export default function Home() {
   ];
   return (
     <>
-      <section id="home" className="min-h-screen flex justify-center items-center bg-(--background)">
+      <section
+        id="home"
+        className="min-h-screen flex justify-center items-center bg-(--background)"
+      >
         <div className="container text-center mx-1 relative">
           <div className="bg-(--primary) w-120 h-120 absolute blur-[120px] opacity-30 rounded-full left-90 -top-40 "></div>
           <p className="py-1 px-8 bg-(--card-bg) shadow-md rounded-[50px] max-w-fit mx-auto">
@@ -60,9 +63,9 @@ export default function Home() {
       <section id="about" className="bg-(--background)">
         <div className="bottom-home max-w-275 mx-auto py-10">
           <div className="info">
-            <div className="content text-center">
-              <h3>How It Works</h3>
-              <p>
+            <div className="content text-center mb-15">
+              <h3 className="text-[60px] font-bold">How It Works</h3>
+              <p className="text-[20px] text-semibold">
                 Three simple steps to start your learning journey and transform
                 your career.
               </p>
@@ -71,7 +74,7 @@ export default function Home() {
               {arrayInfo.map((box) => {
                 return (
                   <div
-                    className="box text-center p-6 shadow-md hover:shadow-2xl duration-300 transition-all"
+                    className={`box bg-(--card-bg) text-center p-6 shadow-md hover:shadow-2xl rounded-lg hover:-translate-y-2.5  duration-300 transition-all ${box.id === 2 && "md:-translate-y-4"}`}
                     key={box.id}
                   >
                     <span className="block max-w-fit mx-auto bg-(--accent) text-[#00F7FF] p-3 rounded-2xl">
@@ -86,7 +89,7 @@ export default function Home() {
               })}
             </div>
           </div>
-          <div className="banner bg-(--card-bg) py-5 px-10 rounded-2xl text-center">
+          <div className="banner bg-(--card-bg) shadow-md hover:shadow-2xl hover:-translate-y-2 duration-300 transition-all py-5 px-10 rounded-2xl text-center mt-15">
             <h3 className="text-[55px] font-bold md:max-w-[60%] md:mx-auto">
               Ready to start your journey ?
             </h3>

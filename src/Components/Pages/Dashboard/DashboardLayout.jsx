@@ -1,37 +1,24 @@
 import { useEffect, useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router";
-import supabase from "../../../util/supabase";
+import { useUser } from "../../../Context/UserAuthetication";
 
 export default function DashboardLayout() {
-  const [user, setUser] = useState(null);
+  const { user, signOut } = useUser();
   const [role, setRole] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
-
-      if (!data?.user) {
-        navigate("/SignIn");
-      } else {
-        console.log(data);
-        setUser(data.user);
-        setRole(data.user.user_metadata?.role);
-      }
-    };
-
-    getUser();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setRole(user?.user_metadata?.role);
+  }, [user]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    signOut();
     navigate("/");
   };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* SIDEBAR */}
       <aside className="w-64 bg-blue-600 text-white p-6 hidden md:block">
         <h2 className="text-2xl font-bold mb-8">LearnHub</h2>
 
@@ -76,9 +63,7 @@ export default function DashboardLayout() {
         </nav>
       </aside>
 
-      {/* MAIN SECTION */}
       <div className="flex-1 flex flex-col">
-        {/* TOPBAR */}
         <header className="bg-white shadow px-8 py-4 flex justify-between items-center">
           <h1 className="font-semibold text-lg capitalize">{role} Dashboard</h1>
 
