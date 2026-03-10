@@ -1,17 +1,5 @@
 @import "tailwindcss";
 
-
-/* :root {
-    --primary: #7C3AED;
-    --primary-dark: #5B21B6;
-    --accent: #22D3EE;
-
-    --background: #F9FAFB;
-    --card-bg: #FFFFFF;
-    --text: #1F2937;
-    --text-light: #6B7280;
-} */
-
 body[theme="light"] {
     --primary: #7C3AED;
     --primary-dark: #5B21B6;

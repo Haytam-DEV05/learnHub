@@ -32,7 +32,7 @@ export default function Home() {
         className="min-h-screen flex justify-center items-center bg-(--background)"
       >
         <div className="container text-center mx-1 relative">
-          <div className="bg-(--primary) w-120 h-120 absolute blur-[120px] opacity-30 rounded-full left-90 -top-40 "></div>
+          <div className="bg-(--primary) w-80 md:w-120 h-120 absolute blur-[120px] opacity-30 rounded-full"></div>
           <p className="py-1 px-8 bg-(--card-bg) shadow-md rounded-[50px] max-w-fit mx-auto">
             New courses added weekly
           </p>
@@ -52,14 +52,16 @@ export default function Home() {
             </a>
             <a
               href=""
-              className="py-3 px-7 block max-w-fit cursor-pointer mx-1 border border-black rounded"
+              className="py-3 px-7 block max-w-fit cursor-pointer mx-1 text-(--text) border border-(--text) rounded"
             >
               Learn More
             </a>
           </div>
         </div>
       </section>
-      <Courses />
+      <>
+        <Courses />
+      </>
       <section id="about" className="bg-(--background)">
         <div className="bottom-home max-w-275 mx-auto py-10">
           <div className="info">

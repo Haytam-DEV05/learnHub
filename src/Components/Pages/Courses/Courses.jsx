@@ -278,8 +278,8 @@ export default function Courses() {
                 ? courses
                 : course.category === activeCategories,
             )
-            .map((course) => {
-              return <CoursesCard course={course} key={course.id} />;
+            .map((course, index) => {
+              return <CoursesCard course={course} key={index} />;
             })}
         </div>
       </div>
