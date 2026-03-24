@@ -1,5 +1,5 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router";
-import Home from "../Pages/Home";
+import LandingPage from "../Landing/LandingPage";
 import Navbar from "./Navbar";
 import SignIn from "../Pages/SignIn";
 import SignUp from "../Pages/SignUp";
@@ -14,7 +14,7 @@ export default function Header() {
       path: "/",
       element: <Layout />,
       children: [
-        { index: true, element: <Home /> },
+        { index: true, element: <LandingPage /> },
         { path: "/SignIn", element: <SignIn /> },
         { path: "/SignUp", element: <SignUp /> },
       ],

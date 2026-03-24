@@ -1,7 +1,12 @@
 import { useState } from "react";
-import CoursesCard from "./CoursesCard";
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from "framer-motion";
+import CourseCard from "./CoursesCard";
 
 export default function Courses() {
+  const [category, setCategory] = useState("All");
+  const cats = ["All", "Development", "Design", "Marketing"];
+
   const courses = [
     {
       id: 1,
@@ -234,54 +239,64 @@ export default function Courses() {
     },
   ];
 
-  const [activeCategories, setActiveCategories] = useState("All");
-  const categories = [
-    "All",
-    "Development",
-    "Design",
-    "Data Science",
-    "Marketing",
-  ];
+  const filtered =
+    category === "All"
+      ? courses
+      : courses.filter((c) => c.category === category);
+
   return (
-    <section id="courses" className="bg-(--background) py-20">
-      <div className="min-h-screen max-w-275 mx-auto ">
-        <h2 className="text-[40px] font-bold max-w-fit mx-auto">
-          Explore Our Top Courses
-        </h2>
-        <p className="border border-black rounded-[30px] px-8 max-w-fit mx-auto my-4">
-          Popular Courses
-        </p>
-        <p className="max-w-[70%] mx-auto text-center">
-          Choose from hundreds of courses taught by industry experts. Learn at
-          your own pace and transform your career.
-        </p>
+    <section id="courses" className="py-24 bg-(--background)">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+          >
+            <h2 className="text-4xl font-black text-(--text)">
+              Our Top Courses
+            </h2>
+            <p className="text-(--text-light) mt-2">
+              Learn from the best in the industry.
+            </p>
+          </motion.div>
 
-        {/* Categories */}
-        <div className="categories my-8 max-w-fit mx-auto">
-          {categories.map((categorie) => {
-            return (
+          {/* Filter Buttons */}
+          <div className="flex flex-wrap gap-2">
+            {cats.map((cat) => (
               <button
-                onClick={() => setActiveCategories(categorie)}
-                className={`rounded-lg py-1 px-4 text-(--text) border border-black mx-1 cursor-pointer ${activeCategories === categorie && "border-0 bg-(--accent) text-white"}`}
+                key={cat}
+                onClick={() => setCategory(cat)}
+                className={`px-5 py-2 rounded-full font-semibold transition-all cursor-pointer ${
+                  category === cat
+                    ? "bg-(--primary) text-white shadow-lg shadow-(--primary)/30"
+                    : "bg-(--card-bg) text-(--text-light) border border-(--text-light)/20 hover:border-(--primary)"
+                }`}
               >
-                {categorie}
+                {cat}
               </button>
-            );
-          })}
+            ))}
+          </div>
         </div>
 
-        {/* Courses */}
-        <div className="courses grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-5">
-          {courses
-            .filter((course) =>
-              activeCategories === "All"
-                ? courses
-                : course.category === activeCategories,
-            )
-            .map((course, index) => {
-              return <CoursesCard course={course} key={index} />;
-            })}
-        </div>
+        <motion.div
+          layout
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          <AnimatePresence mode="popLayout">
+            {filtered.map((course) => (
+              <motion.div
+                key={course.id}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3 }}
+              >
+                <CourseCard course={course} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );

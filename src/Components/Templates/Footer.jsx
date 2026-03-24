@@ -1,68 +1,111 @@
-import { SiMinutemailer } from "react-icons/si";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
+  FaBookOpen,
+} from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer
-      className="py-14 transition-colors duration-300"
-      style={{
-        background: "var(--background)",
-        borderTop: "1px solid var(--text-light)",
-        color: "var(--text)",
-      }}
-    >
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Top Footer */}
-        <div className="text-center space-y-4">
-          <h3 className="text-2xl font-semibold">
-            Subscribe to our newsletter
-          </h3>
-
-          <p
-            className="max-w-xl mx-auto"
-            style={{ color: "var(--text-light)" }}
-          >
-            Get the latest courses and learning tips delivered to your inbox.
-          </p>
-
-          <form className="mt-6 flex items-center justify-center gap-3 max-w-md mx-auto">
-            {/* Input */}
-            <div className="relative w-full">
-              <input
-                type="email"
-                placeholder="Enter Your Email"
-                className="w-full px-4 py-3 rounded-xl border outline-none transition"
-                style={{
-                  background: "var(--card-bg)",
-                  borderColor: "var(--text-light)",
-                  color: "var(--text)",
-                }}
-              />
-
-              <SiMinutemailer
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-                style={{ color: "var(--text-light)" }}
-              />
+    <footer className="bg-(--card-bg) border-t border-(--text-light)/10 pt-20 pb-10">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12"
+      >
+        {/* Brand Column */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-2">
+            <div className="bg-(--primary) p-2 rounded-lg text-white">
+              <FaBookOpen size={20} />
             </div>
+            <h1 className="text-2xl font-bold text-(--text)">LearnHub</h1>
+          </div>
+          <p className="text-(--text-light)">
+            The world's leading platform for online learning. Empowering
+            creators and professionals since 2024.
+          </p>
+          <div className="flex gap-4">
+            {[FaFacebook, FaTwitter, FaInstagram, FaLinkedin].map((Icon, i) => (
+              <a
+                key={i}
+                href="#"
+                className="p-3 bg-(--background) rounded-full text-(--text-light) hover:text-(--primary) transition-all"
+              >
+                <Icon size={20} />
+              </a>
+            ))}
+          </div>
+        </div>
 
-            {/* Button */}
-            <button className="px-6 py-3 rounded-xl font-medium text-white bg-(--primary) hover:bg-(--primary-dark) duration-200 transition-colors cursor-pointer">
+        {/* Links Columns */}
+        <div>
+          <h4 className="font-bold text-lg mb-6 text-(--text)">Platform</h4>
+          <ul className="space-y-4 text-(--text-light)">
+            <li>
+              <a href="#" className="hover:text-(--primary)">
+                Browse Courses
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-(--primary)">
+                Mentorship
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-(--primary)">
+                Pricing Plans
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="font-bold text-lg mb-6 text-(--text)">Company</h4>
+          <ul className="space-y-4 text-(--text-light)">
+            <li>
+              <a href="#" className="hover:text-(--primary)">
+                About Us
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-(--primary)">
+                Careers
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-(--primary)">
+                Contact
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        {/* Newsletter */}
+        <div>
+          <h4 className="font-bold text-lg mb-6 text-(--text)">Stay Updated</h4>
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Email address"
+              className="w-full bg-(--background) border border-(--text-light)/20 rounded-xl px-4 py-3 outline-none focus:border-(--primary) text-(--text)"
+            />
+            <button className="mt-4 w-full bg-(--primary) text-white font-bold py-3 rounded-xl">
               Subscribe
             </button>
-          </form>
+          </div>
         </div>
+      </motion.div>
 
-        {/* Bottom Footer */}
-        <div
-          className="mt-12 text-center pt-6"
-          style={{
-            borderTop: "1px solid var(--text-light)",
-          }}
-        >
-          <h2 className="text-sm" style={{ color: "var(--text-light)" }}>
-            All Rights Reserved By Haitam Nefal | &copy;{" "}
-            {new Date().getFullYear()}
-          </h2>
-        </div>
+      <div className="max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-(--text-light)/10 text-center text-(--text-light) text-sm">
+        <p>
+          © {new Date().getFullYear()} LearnHub by Haitam Nefal. All rights
+          reserved.
+        </p>
       </div>
     </footer>
   );

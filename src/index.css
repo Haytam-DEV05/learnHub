@@ -1,25 +1,29 @@
 @import "tailwindcss";
 
-body[theme="light"] {
-    --primary: #7C3AED;
-    --primary-dark: #5B21B6;
-    --accent: #22D3EE;
-
-    --background: #F9FAFB;
-    --card-bg: #FFFFFF;
-    --text: #1F2937;
-    --text-light: #6B7280;
+body {
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-body[theme="dark"] {
-    --primary: #A78BFA;
-    --primary-dark: #7C3AED;
-    --accent: #22D3EE;
+@layer base {
+    body[theme="light"] {
+        --primary: #6366F1;
+        --primary-dark: #4F46E5;
+        --accent: #06B6D4;
+        --background: #F8FAFC;
+        --card-bg: #FFFFFF;
+        --text: #0F172A;
+        --text-light: #64748B;
+    }
 
-    --background: #0F172A;
-    --card-bg: #1E293B;
-    --text: #F1F5F9;
-    --text-light: #94A3B8;
+    body[theme="dark"] {
+        --primary: #818CF8;
+        --primary-dark: #6366F1;
+        --accent: #22D3EE;
+        --background: #020617;
+        --card-bg: #0F172A;
+        --text: #F1F5F9;
+        --text-light: #94A3B8;
+    }
 }
 
 h1,
