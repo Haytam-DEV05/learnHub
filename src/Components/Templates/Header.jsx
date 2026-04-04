@@ -6,6 +6,7 @@ import SignUp from "../Pages/SignUp";
 import StudentDashboard from "../Pages/Dashboard/Student/StudentDashboard";
 import TeacherDashboard from "../Pages/Dashboard/Teacher/TeacherDashboard";
 import DashboardLayout from "../Pages/Dashboard/DashboardLayout";
+import CreateDashboard from "../Pages/Dashboard/Teacher/CreateDashboard";
 import Footer from "./Footer";
 
 export default function Header() {
@@ -27,7 +28,10 @@ export default function Header() {
     {
       path: "/teacher/",
       element: <DashboardLayout />,
-      children: [{ path: "dashboard", element: <TeacherDashboard /> }],
+      children: [
+        { path: "dashboard", element: <TeacherDashboard /> },
+        { path: "create", element: <CreateDashboard /> },
+      ],
     },
   ]);
   function Layout() {
