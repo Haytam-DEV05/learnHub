@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaInfoCircle,
   FaLayerGroup,
   FaImage,
   FaCheckCircle,
+  FaChevronDown,
 } from "react-icons/fa";
+import supabase from "../../../../util/supabase";
 
 export default function CreateDashboard() {
+  const [categories, setCategories] = useState([]);
+  const [error, setError] = useState("");
   const [step, setStep] = useState(1); // 1: Info, 2: Curriculum, 3: Preview
   const [courseData, setCourseData] = useState({
     title: "",
@@ -16,6 +20,29 @@ export default function CreateDashboard() {
     category: "",
     image: null,
   });
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const { data } = await supabase.from("categories").select("*");
+      setCategories(data);
+    };
+    fetchCategories();
+  }, []);
+
+  const handleBtnFirstCreate = (e) => {
+    e.preventDefault();
+    const { title, description, price, level, category } = courseData;
+    if (
+      !title.trim() ||
+      !description.trim() ||
+      !price.trime() ||
+      !level.trim() ||
+      !category.trim()
+    )
+      return setError("pleas Enter All The Field !");
+
+    const { data, error } = supabase.from("courses").insert();
+  };
 
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
@@ -76,15 +103,34 @@ export default function CreateDashboard() {
                   className="w-full p-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-bold text-slate-500 mb-2 uppercase tracking-wider">
+              <div className="relative group">
+                <label className="block text-xs font-black text-slate-400 mb-2 uppercase tracking-[2px] ml-1">
                   Category
                 </label>
-                <select className="w-full p-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 appearance-none">
-                  <option>Development</option>
-                  <option>Design</option>
-                  <option>Business</option>
-                </select>
+
+                <div className="relative">
+                  <select
+                    onChange={(e) =>
+                      setCourseData({
+                        ...courseData,
+                        category_id: e.target.value,
+                      })
+                    }
+                    className="w-full appearance-none bg-slate-50 border-2 border-slate-100 text-slate-700 text-sm font-bold rounded-2xl p-4 pr-12 outline-none transition-all duration-300 focus:bg-white focus:ring-4 focus:ring-blue-100 cursor-pointer hover:border-slate-300"
+                  >
+                    <option value="" className="text-slate-400">
+                      -- Select Category --
+                    </option>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id} className="py-2">
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 group-focus-within:text-blue-600 transition-colors">
+                    <FaChevronDown size={14} />
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -109,7 +155,6 @@ export default function CreateDashboard() {
         </div>
       )}
 
-      {/* STEP 2: Curriculum (Simplified for now) */}
       {step === 2 && (
         <div className="bg-white p-10 rounded-[2.5rem] shadow-sm border border-slate-100">
           <h3 className="text-2xl font-bold text-slate-800 mb-4">
@@ -120,7 +165,6 @@ export default function CreateDashboard() {
           </p>
 
           <div className="space-y-4 mb-8">
-            {/* Example Section */}
             <div className="p-6 border-2 border-dashed border-slate-200 rounded-3xl text-center">
               <p className="text-slate-400 mb-4 font-medium">
                 No sections added yet.
@@ -145,11 +189,6 @@ export default function CreateDashboard() {
               Preview & Publish
             </button>
           </div>
-        </div>
-      )}
-      {step === 3 && (
-        <div>
-          <h2>Thsnk You For Completing all this information</h2>
         </div>
       )}
     </div>

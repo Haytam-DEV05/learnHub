@@ -53,7 +53,7 @@ export const UserProvider = ({ children }) => {
         data: metadata,
       },
     });
-
+    console.log(error);
     if (error) return { data, error };
 
     if (data?.user) {
@@ -64,7 +64,6 @@ export const UserProvider = ({ children }) => {
         speciality: metadata.speciality || null,
       });
     }
-
     return { data, error };
   };
 

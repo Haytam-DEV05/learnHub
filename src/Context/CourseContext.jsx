@@ -79,8 +79,6 @@ export const CourseProvider = ({ children }) => {
     if (user) getStudentCourses();
   }, [user, getStudentCourses]);
 
-
-
   
 
   const value = {

@@ -17,7 +17,6 @@ export default function SignIn() {
     password: "",
   });
 
-  // (L-Logic dyalk bla tbdil...) remove error automatically
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => setError(""), 3000);
@@ -45,7 +44,6 @@ export default function SignIn() {
         return setError(error.message);
       }
       if (data?.user) {
-        // Drna "light" default hit jarrabti n-animiwha o m9addax
         document.body.setAttribute("theme", "light");
         redirectByRole(data.user);
       }
@@ -57,12 +55,8 @@ export default function SignIn() {
     }
   };
 
-  // ----------------------------------------------------
-  // Hadchi l-ta7t houwa li t-صلح fih l-design visual
-  // ----------------------------------------------------
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-(--background) relative overflow-hidden">
-      {/* Background Decorative Circles (Modern Glow) */}
       <div className="absolute top-0 -left-20 w-72 h-72 bg-(--primary) rounded-full blur-[120px] opacity-10"></div>
       <div className="absolute bottom-0 -right-20 w-72 h-72 bg-(--accent) rounded-full blur-[120px] opacity-10"></div>
 

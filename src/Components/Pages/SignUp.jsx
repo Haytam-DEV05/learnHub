@@ -5,6 +5,7 @@ import { useNavigate, NavLink } from "react-router";
 import { useUser } from "../../Context/UserAuthetication";
 import { FaUser, FaLock, FaBriefcase } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+import Toast from "../SmalComponents/Toast";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -13,6 +14,9 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [role, setRole] = useState("student");
+
+  const [showToast, setShowToast] = useState(false);
+  const [messageToast, setMessageToast] = useState("");
 
   const [formInputs, setFormInputs] = useState({
     firstName: "",
@@ -62,8 +66,13 @@ export default function SignUp() {
       });
       if (error) return setError(error.message);
       if (data?.user) {
-        alert("Check your email to verify your account.");
-        navigate("/SignIn");
+        setShowToast(true);
+        setMessageToast("Check your email to verify your account.");
+        setTimeout(() => {
+          setShowToast(false);
+          setMessageToast("");
+          navigate("/SignIn");
+        }, 3500);
       }
     } catch (err) {
       console.log(err);
@@ -75,6 +84,9 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-24 bg-(--background) relative overflow-hidden">
+      <AnimatePresence>
+        {showToast && <Toast message={messageToast} />}
+      </AnimatePresence>
       {/* Background Decor */}
       <div className="absolute top-0 -left-20 w-96 h-96 bg-(--primary) rounded-full blur-[150px] opacity-10"></div>
       <div className="absolute bottom-0 -right-20 w-96 h-96 bg-(--accent) rounded-full blur-[150px] opacity-10"></div>
@@ -192,7 +204,6 @@ export default function SignUp() {
               />
             </div>
 
-            {/* TEACHER FIELD - Animated */}
             <AnimatePresence>
               {role === "teacher" && (
                 <motion.div
