@@ -6,6 +6,7 @@ import {
   FaCheckCircle,
   FaChevronDown,
   FaTrash,
+  FaExclamationCircle,
 } from "react-icons/fa";
 import supabase from "../../../../util/supabase";
 import { useUser } from "../../../../Context/UserAuthetication";
@@ -132,11 +133,11 @@ export default function CreateDashboard() {
         ></div>
         <StepIcon active={step >= 3} icon={<FaCheckCircle />} label="Publish" />
       </div>
-      {/* ERRORS */}
       {error && (
-        <p className="text-red-600 bg-red-300 py-5 px-10 rounded-md my-3">
-          {error}
-        </p>
+        <div className="flex items-center gap-3 bg-red-50 border border-red-100 text-red-700 py-4 px-6 rounded-2xl my-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          <FaExclamationCircle className="text-red-500" />
+          <p className="font-bold text-sm">{error}</p>
+        </div>
       )}
 
       {/* STEP 1: Basic Information */}
