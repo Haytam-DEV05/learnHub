@@ -41,25 +41,25 @@ export default function TeacherDashboard() {
         <TeacherStatCard
           icon={<FaUsers />}
           label="Total Students"
-          value="1,240"
+          value="0"
           color="purple"
         />
         <TeacherStatCard
           icon={<FaStar />}
           label="Avg. Rating"
-          value="4.8"
+          value="0"
           color="orange"
         />
         <TeacherStatCard
           icon={<FaDollarSign />}
           label="Earnings"
-          value="$1,450"
+          value="$0"
           color="green"
         />
       </div>
 
       {/* Course Management Table */}
-      <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-4xl shadow-sm border border-slate-100 overflow-hidden">
         <div className="p-8 border-b border-slate-50">
           <h3 className="text-xl font-bold text-slate-800">My Courses</h3>
         </div>
